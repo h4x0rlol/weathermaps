@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Interfaces from './iface/interfaces';
+import Interfaces from './iface/Interfaces';
 
 class App extends React.Component {
     constructor(props) {
