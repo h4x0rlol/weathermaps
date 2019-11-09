@@ -2,10 +2,6 @@ import React, { Component } from 'react'
 import { useState } from 'react'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import Api from '../openweather/Api'
-import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
-import Alert from 'react-bootstrap/Alert'
 import Forms from './Forms'
 
 function ControlledTabs() {
@@ -14,7 +10,7 @@ function ControlledTabs() {
   return (
     <Tabs id="controlled-tab-example" activeKey={key} onSelect={k => setKey(k)}>
       <Tab eventKey="text" title="Text">
-        <Forms getWeather={Api.getWeather}/>
+        <Forms/>
       </Tab>
       <Tab eventKey="map" title="Map">
       </Tab>
