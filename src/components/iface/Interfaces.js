@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Forms from './Forms'
+import Maps from '../maps/Maps'
 
 function ControlledTabs() {
   const [key, setKey] = useState('text');
@@ -13,6 +14,7 @@ function ControlledTabs() {
         <Forms/>
       </Tab>
       <Tab eventKey="map" title="Map">
+        <Maps/>
       </Tab>
       <Tab eventKey="description" title="Choose how you want to know the weather" disabled
       >
