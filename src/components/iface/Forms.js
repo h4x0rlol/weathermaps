@@ -3,9 +3,14 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
+import Table from 'react-bootstrap/Table'
 
 
 const API_KEY = 'd674110527020c6fa3a7d540ff7bf7b0'
+
+const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+]
 
 export default class Forms extends Component {
 
@@ -20,7 +25,8 @@ export default class Forms extends Component {
             error: undefined,
             cityid: undefined,
             forecast: [],
-            date: []
+            date: [],
+            tableVisible: undefined
         };
     }
 
@@ -73,15 +79,21 @@ export default class Forms extends Component {
         console.log(dataForecast)
         let forecastarr = []
         let datearr = []
-        for(let i=0;i<=5;i++){    
-        forecastarr.push(Number((dataForecast.list[i].main.temp) - 273).toFixed(1)),
-        datearr.push(dataForecast.list[i].dt_txt)
-    }
-    this.setState({
-        forecast: forecastarr,
-        date: datearr
-        
-    })
+        let i = 0
+        while (i <= 40) {
+            forecastarr.push(Number((dataForecast.list[i].main.temp) - 273).toFixed(1))
+            let datedef = new Date()
+            datearr.push(new Date(datedef.setTime(Date.parse(dataForecast.list[i].dt_txt))))
+            console.log(datearr)
+            i += 9
+        }
+
+        this.setState({
+            forecast: forecastarr,
+            date: datearr,
+            tableVisible: 1
+
+        })
     }
 
 
@@ -118,11 +130,30 @@ export default class Forms extends Component {
 
 
 
-                <Button onClick={() => { this.getForecast() }} variant="primary">Get forecast</Button>
-                <p>{this.state.forecast}
-                </p>
-                <p>{this.state.date[4]}</p>
+                {this.state.temperature && <Button onClick={() => { this.getForecast() }} variant="primary">Get forecast</Button>}
+                {this.state.tableVisible && <Table bordered>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <td>{monthNames[this.state.date[0].getMonth()]} {this.state.date[0].getDate().toString()}th</td>
+                            <td>{monthNames[this.state.date[1].getMonth()]} {this.state.date[1].getDate().toString()}th</td>
+                            <td>{monthNames[this.state.date[2].getMonth()]} {this.state.date[2].getDate().toString()}th</td>
+                            <td>{monthNames[this.state.date[3].getMonth()]} {this.state.date[3].getDate().toString()}th</td>
+                            <td>{monthNames[this.state.date[4].getMonth()]} {this.state.date[4].getDate().toString()}th</td>
 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Temperature</th>
+                            <td>{this.state.forecast[0]}°C</td>
+                            <td>{this.state.forecast[1]}°C</td>
+                            <td>{this.state.forecast[2]}°C</td>
+                            <td>{this.state.forecast[3]}°C</td>
+                            <td>{this.state.forecast[4]}°C</td>
+                        </tr>
+                    </tbody>
+                </Table>}
             </div>
         )
     }
