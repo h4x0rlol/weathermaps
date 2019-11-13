@@ -1,21 +1,34 @@
 import React, { Component } from 'react'
-import { YMaps, Map, Circle, FullscreenControl, GeolocationControl, TypeSelector  } from 'react-yandex-maps';
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+    width: ${props=>props.width}
+    height: ${props=>props.height}
+`
+
 
 
 export default class Maps extends Component {
-    
-    
+
+    componentDidMount(){
+        this.map = L.map('map',{
+            center: [58,16],
+            zoom:6,
+            zoomControl: false
+        })
+
+        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png',{
+            detectRetina:true,
+            maxZoom:20,
+            maxNativeZoom: 17,
+        }).addTo(this.map)
+    }
 
     render() {
         return (
-            <YMaps> 
-                <Map
-           defaultState={{ center: [55.76, 37.64], zoom: 10,controls: [], }} width={1000} height={500}>    
-                    <FullscreenControl />
-                    <GeolocationControl options={{ float: 'left' }} />
-                    <TypeSelector options={{ float: 'right' }} />
-                </Map>
-            </YMaps>
+            <Wrapper width="1920px" height="1080px" id="map"/>
         )
     }
 }

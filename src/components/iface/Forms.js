@@ -45,7 +45,8 @@ export default class Forms extends Component {
                     humidity: data.main.humidity,
                     description: data.weather[0].description,
                     error: "",
-                    cityid: data.id
+                    cityid: data.id,
+                    tableVisible: undefined
                 })
             }
             else {
@@ -55,7 +56,8 @@ export default class Forms extends Component {
                     temperature: undefined,
                     humidity: undefined,
                     description: undefined,
-                    error: "Please check the input is correct"
+                    error: "Please check the input is correct",
+                    tableVisible: undefined
                 })
             }
         }
@@ -67,7 +69,8 @@ export default class Forms extends Component {
                 temperature: undefined,
                 humidity: undefined,
                 description: undefined,
-                error: "Please check the input is correct"
+                error: "Please check the input is correct",
+                tableVisible: undefined
             })
         }
     }
