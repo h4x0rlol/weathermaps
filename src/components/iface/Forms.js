@@ -4,6 +4,7 @@ import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Table from 'react-bootstrap/Table'
+import Graph from './Graph'
 
 
 const API_KEY = 'd674110527020c6fa3a7d540ff7bf7b0'
@@ -157,6 +158,9 @@ export default class Forms extends Component {
                         </tr>
                     </tbody>
                 </Table>}
+
+                {this.state.tableVisible && <Graph forecast={this.state.forecast} date={this.state.date}/>}
+                
             </div>
         )
     }
