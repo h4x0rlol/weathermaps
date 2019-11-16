@@ -1,34 +1,18 @@
 import React, { Component } from 'react'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
-import styled from 'styled-components'
-
-const Wrapper = styled.div`
-    width: ${props=>props.width}
-    height: ${props=>props.height}
-`
-
+import Jumbotron from 'react-bootstrap/Jumbotron'
 
 
 export default class Maps extends Component {
-
-    componentDidMount(){
-        this.map = L.map('map',{
-            center: [58,16],
-            zoom:6,
-            zoomControl: false
-        })
-
-        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png',{
-            detectRetina:true,
-            maxZoom:20,
-            maxNativeZoom: 17,
-        }).addTo(this.map)
-    }
-
     render() {
         return (
-            <Wrapper width="1920px" height="1080px" id="map"/>
+            <div>
+                <Jumbotron>
+                    <h1>Google maps now is not free</h1>
+                    <p>
+                        ¯\_(ツ)_/¯
+                    </p>
+                </Jumbotron>
+            </div>
         )
     }
 }

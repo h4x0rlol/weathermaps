@@ -37,7 +37,6 @@ export default class Forms extends Component {
         const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.state.city},${this.state.country}&APPID=${API_KEY}`)
         const data = await api_call.json()
         if (this.state.city && this.state.country) {
-            console.log(data)
             if (data.message != "city not found") {
                 this.setState({
                     city: data.name,
@@ -63,7 +62,6 @@ export default class Forms extends Component {
             }
         }
         else {
-            console.log(data.message)
             this.setState({
                 city: undefined,
                 contry: undefined,
@@ -80,7 +78,6 @@ export default class Forms extends Component {
     async getForecast() {
         const forecast_call = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=${this.state.cityid}&appid=${API_KEY}`)
         const dataForecast = await forecast_call.json()
-        console.log(dataForecast)
         let forecastarr = []
         let datearr = []
         let i = 0
@@ -88,7 +85,6 @@ export default class Forms extends Component {
             forecastarr.push(Number((dataForecast.list[i].main.temp) - 273).toFixed(1))
             let datedef = new Date()
             datearr.push(new Date(datedef.setTime(Date.parse(dataForecast.list[i].dt_txt))))
-            console.log(datearr)
             i += 9
         }
 

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Forms from './Forms'
-import Maps from '../maps/Maps'
+import Maps from '../Maps/Maps'
 
 function ControlledTabs() {
   const [key, setKey] = useState('text');
