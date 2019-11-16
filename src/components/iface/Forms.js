@@ -76,7 +76,7 @@ export default class Forms extends Component {
 
 
     async getForecast() {
-        const forecast_call = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=${this.state.cityid}&appid=${API_KEY}`)
+        const forecast_call = await fetch(`//api.openweathermap.org/data/2.5/forecast?id=${this.state.cityid}&appid=${API_KEY}`)
         const dataForecast = await forecast_call.json()
         let forecastarr = []
         let datearr = []
