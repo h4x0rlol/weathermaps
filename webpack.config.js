@@ -3,7 +3,7 @@ module.exports = {
 		'./src/main.js'
 	],
 	output: {
-		filename: 'build.js'
+    filename: 'bundle.js'
 	},
 	module: {
 		rules: [
