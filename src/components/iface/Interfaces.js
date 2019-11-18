@@ -7,7 +7,6 @@ import Maps from '../Maps/Maps'
 
 function ControlledTabs() {
   const [key, setKey] = useState('text');
-
   return (
     <Tabs id="controlled-tab-example" activeKey={key} onSelect={k => setKey(k)}>
       <Tab eventKey="text" title="Text">
