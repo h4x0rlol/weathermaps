@@ -15,30 +15,41 @@ export default class Maps extends React.Component {
     constructor() {
       super();
       this.state = {
-        markers: []
+        markers: [],
+        key: 1
       };
     }
     
     
-    componentDidMount () {
-      const map = this.refs.map.leafletElement
-      setTimeout(function(){ map.invalidateSize()}, 1000);
-    } 
+   
+  
 
 
-    addMarker = (e) => {
-        const {markers} = this.state
-        markers.splice(0, 2,e.latlng)
-        this.setState({markers})
-        console.log(markers[0].lat)
-       
-      }
+   
 
       async getWeather(){
         const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=${API_KEY}`)
         const data = await api_call.json()
       }
+      
+      
+      componentWillUpdate(){
+      if(this.state.markers[0]==undefined){
+      const map = this.refs.map.leafletElement
+      setTimeout(function(){ map.invalidateSize()}, 100);
+      console.log(map)
+      }
+      }
+        
+      
   
+      addMarker = (e) => {
+        const {markers} = this.state
+        markers.splice(0, 2,e.latlng)
+        this.setState({markers})
+        console.log(markers[0].lat)
+      }
+      
     render() {
       return (
         <Map
