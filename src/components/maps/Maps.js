@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import MapsForm from '../Maps/MapsForm'
 
 const API_KEY = 'd674110527020c6fa3a7d540ff7bf7b0'
@@ -19,7 +19,10 @@ export default class Maps extends React.Component {
       markers: [],
       city: undefined,
       contry: undefined,
-      temperature: undefined
+      temperature: undefined,
+      description: [],
+      forecast: [],
+      date: []
     };
   }
 
@@ -37,10 +40,36 @@ export default class Maps extends React.Component {
     this.setState({
       city: data.name,
       country: data.sys.country,
-      temperature: Number((data.main.temp) - 273).toFixed(1)
+      temperature: Number((data.main.temp) - 273).toFixed(1),
+      description: data.weather[0].description
     })
   }
 
+ 
+
+  async getForecast() {
+    const forecast_call = await fetch(`//api.openweathermap.org/data/2.5/forecast?lat=${this.state.markers[0].lat}&lon=${this.state.markers[0].lng}&appid=${API_KEY}`)
+    const dataForecast = await forecast_call.json()
+    console.log(dataForecast)
+    let forecastarr = []
+    let datearr = []
+    let descriptionarr = []
+    let i = 0
+    while (i <= 40) {
+        forecastarr.push(Number((dataForecast.list[i].main.temp) - 273).toFixed(1))
+        let datedef = new Date()
+        datearr.push(new Date(datedef.setTime(Date.parse(dataForecast.list[i].dt_txt))))
+        descriptionarr.push(dataForecast.list[i].weather[0].description)
+        console.log(descriptionarr)
+        i += 9
+    }
+
+    this.setState({
+        forecast: forecastarr,
+        date: datearr,
+        description: descriptionarr
+    })
+}
 
   componentDidUpdate() {
     if (this.state.markers[0] == undefined) {
@@ -62,35 +91,34 @@ export default class Maps extends React.Component {
   onClick(event) {
     this.addMarker(event);
     this.getWeather();
- }
+    this.getForecast();
+  }
   render() {
     return (
-     <div>
-      <Map
-        ref="map"
-        center={[55.7522200, 37.6155600]}
-        onClick={event =>
-          this.onClick(event)
-        }
-        // onClick={this.addMarker}
-        // onClick={() => { this.getWeather() }}
-        zoom={5}
-        style={style.map}
-      >
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-        />
-        {this.state.markers.map((position, idx) =>
-          <Marker key={`marker-${idx}`} position={position}>
-            <Popup>
-              <span>Popup</span>
-            </Popup>
-          </Marker>
-        )}
-        
-      </Map>
-      {this.state.city && <MapsForm city={this.state.city}/>}
+      <div>
+        <Map
+          ref="map"
+          center={[55.7522200, 37.6155600]}
+          onClick={event =>
+            this.onClick(event)
+          }
+          zoom={5}
+          style={style.map}
+        >
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+          />
+          {this.state.markers.map((position, idx) =>
+            <Marker key={`marker-${idx}`} position={position}>
+              <Tooltip permanent>
+                <span>{this.state.city}</span>
+              </Tooltip>
+            </Marker>
+          )}
+
+        </Map>
+        {this.state.city && this.state.date && <MapsForm city={this.state.city} country={this.state.country} temperature={this.state.temperature} forecast={this.state.forecast} date={this.state.date} description={this.state.description} />}
       </div>
     );
   }
