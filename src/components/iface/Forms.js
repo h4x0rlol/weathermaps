@@ -27,10 +27,25 @@ export default class Forms extends Component {
             cityid: undefined,
             forecast: [],
             date: [],
-            tableVisible: undefined
+            tableVisible: undefined,
+            emtpy: undefined
         };
     }
 
+// shouldComponentUpdate(){
+//     if(this.state.city!=undefined){
+//         return true
+//         this.setState({
+//             empty: undefined
+//         })  
+//     }
+//     else{
+//         return false
+//         this.setState({
+//             empty: undefined
+//         }) 
+//     }
+// }
 
     async getWeather() {
 
@@ -46,8 +61,9 @@ export default class Forms extends Component {
                     description: data.weather[0].description,
                     error: "",
                     cityid: data.id,
-                    tableVisible: undefined
+                    empty: 1
                 })
+                this.getForecast()
             }
             else {
                 this.setState({
@@ -86,6 +102,7 @@ export default class Forms extends Component {
             let datedef = new Date()
             datearr.push(new Date(datedef.setTime(Date.parse(dataForecast.list[i].dt_txt))))
             i += 9
+            console.log(datearr)
         }
 
         this.setState({
@@ -96,31 +113,55 @@ export default class Forms extends Component {
         })
     }
 
+    displayAllCountry(event){
+        this.setState({
+            country: event.target.value
+        })
+        if(this.state.city && this.state.country){
+            this.setState({
+                empty: undefined
+            })
+            
+        }
+    }
+
+    displayAllCity(event){
+        this.setState({
+            city: event.target.value
+        })
+        if(this.state.city){
+            this.setState({
+                empty: undefined
+            })
+            
+        }
+    }
+
 
     render() {
         return (
             <div>
                 <InputGroup className="mb-3">
                     <InputGroup.Prepend>
-                        <Button onClick={() => { this.getWeather() }} variant="primary">Get Weather</Button>
+                        <Button onClick={() => { this.getWeather() }}  variant="primary">Get Weather</Button>
                     </InputGroup.Prepend>
-                    <FormControl name="country" onChange={(event) => this.setState({ country: event.target.value })} placeholder="Country..." />
-                    <FormControl name="city" onChange={(event) => this.setState({ city: event.target.value })} placeholder="City..." />
+                    <FormControl name="country" onChange={(event)=>this.displayAllCountry(event)}  placeholder="Country..." />
+                    <FormControl name="city" onChange={(event)=>this.displayAllCity(event)}  placeholder="City..." />
                 </InputGroup>
 
                 {this.state.city && this.state.country && <ListGroup>
                     <ListGroup.Item>Location: {this.state.city}, {this.state.country}</ListGroup.Item>
                 </ListGroup>}
 
-                {this.state.temperature && <ListGroup>
+                {this.state.temperature && this.state.empty && <ListGroup>
                     <ListGroup.Item>Temperature: {this.state.temperature}°C</ListGroup.Item>
                 </ListGroup>}
 
-                {this.state.humidity && <ListGroup>
+                {this.state.humidity && this.state.empty && <ListGroup>
                     <ListGroup.Item>Humidity: {this.state.humidity}</ListGroup.Item>
                 </ListGroup>}
 
-                {this.state.description && <ListGroup>
+                {this.state.description && this.state.empty && <ListGroup>
                     <ListGroup.Item>Conditions: {this.state.description}</ListGroup.Item>
                 </ListGroup>}
 
@@ -130,8 +171,8 @@ export default class Forms extends Component {
 
 
 
-                {this.state.temperature && <Button onClick={() => { this.getForecast() }} variant="primary">Get forecast</Button>}
-                {this.state.tableVisible && <Table bordered>
+                {/* {this.state.temperature && <Button onClick={() => { this.getForecast() }} variant="primary">Get forecast</Button>} */}
+                {this.state.tableVisible && this.state.empty && <Table bordered>
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -155,7 +196,7 @@ export default class Forms extends Component {
                     </tbody>
                 </Table>}
 
-                {this.state.tableVisible && <Graph forecast={this.state.forecast} date={this.state.date}/>}
+                {this.state.tableVisible && this.state.empty && <Graph forecast={this.state.forecast} date={this.state.date}/>}
                 
             </div>
         )
