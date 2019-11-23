@@ -6,15 +6,12 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Table from 'react-bootstrap/Table'
 import Graph from './Graph'
 
-
 const API_KEY = 'd674110527020c6fa3a7d540ff7bf7b0'
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-]
+    "July", "August", "September", "October", "November", "December"]
 
 export default class Forms extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -32,21 +29,6 @@ export default class Forms extends Component {
             connectionError: undefined
         };
     }
-
-    // shouldComponentUpdate(){
-    //     if(this.state.city!=undefined){
-    //         return true
-    //         this.setState({
-    //             empty: undefined
-    //         })  
-    //     }
-    //     else{
-    //         return false
-    //         this.setState({
-    //             empty: undefined
-    //         }) 
-    //     }
-    // }
 
     async getWeather() {
         try {
@@ -91,13 +73,11 @@ export default class Forms extends Component {
             }
         }
         catch (e) {
-            console.log(e)
             this.setState({
-              connectionError: e.name +":" + " " + e.message
+                connectionError: e.name + ":" + " " + e.message
             })
         }
     }
-
 
     async getForecast() {
         const forecast_call = await fetch(`//api.openweathermap.org/data/2.5/forecast?id=${this.state.cityid}&appid=${API_KEY}`)
@@ -110,9 +90,7 @@ export default class Forms extends Component {
             let datedef = new Date()
             datearr.push(new Date(datedef.setTime(Date.parse(dataForecast.list[i].dt_txt))))
             i += 9
-            console.log(datearr)
         }
-
         this.setState({
             forecast: forecastarr,
             date: datearr,
@@ -144,7 +122,6 @@ export default class Forms extends Component {
 
         }
     }
-
 
     render() {
         return (
@@ -178,12 +155,9 @@ export default class Forms extends Component {
                 </ListGroup>}
 
                 {this.state.connectionError && <ListGroup>
-                    <ListGroup.Item>{this.state.connectionError}<br/>Try to change browser or attempt later</ListGroup.Item>
+                    <ListGroup.Item>{this.state.connectionError}<br />Try to change browser or attempt later</ListGroup.Item>
                 </ListGroup>}
 
-
-
-                {/* {this.state.temperature && <Button onClick={() => { this.getForecast() }} variant="primary">Get forecast</Button>} */}
                 {this.state.tableVisible && this.state.empty && <Table bordered>
                     <thead>
                         <tr>
@@ -193,7 +167,6 @@ export default class Forms extends Component {
                             <td>{monthNames[this.state.date[2].getMonth()]} {this.state.date[2].getDate().toString()}th</td>
                             <td>{monthNames[this.state.date[3].getMonth()]} {this.state.date[3].getDate().toString()}th</td>
                             <td>{monthNames[this.state.date[4].getMonth()]} {this.state.date[4].getDate().toString()}th</td>
-
                         </tr>
                     </thead>
                     <tbody>

@@ -28,39 +28,29 @@ export default class Maps extends React.Component {
     };
   }
 
-
-
-
-
-
-
-
   async getWeather() {
     try {
       const api_call = await fetch(`//api.openweathermap.org/data/2.5/weather?lat=${this.state.markers[0].lat}&lon=${this.state.markers[0].lng}&appid=${API_KEY}`)
       const data = await api_call.json()
-      console.log(data.name)
       this.setState({
         city: data.name,
         country: data.sys.country,
         temperature: Number((data.main.temp) - 273).toFixed(1),
-        description: data.weather[0].description
+        description: data.weather[0].description,
+        connectionError: undefined
       })
     }
     catch (e) {
-      console.log(e)
       this.setState({
-        connectionError: e.name +":" + " " + e.message
+        city: undefined,
+        connectionError: e.name + ":" + " " + e.message
       })
     }
   }
 
-
-
   async getForecast() {
     const forecast_call = await fetch(`//api.openweathermap.org/data/2.5/forecast?lat=${this.state.markers[0].lat}&lon=${this.state.markers[0].lng}&appid=${API_KEY}`)
     const dataForecast = await forecast_call.json()
-    console.log(dataForecast)
     let forecastarr = []
     let datearr = []
     let descriptionarr = []
@@ -70,10 +60,8 @@ export default class Maps extends React.Component {
       let datedef = new Date()
       datearr.push(new Date(datedef.setTime(Date.parse(dataForecast.list[i].dt_txt))))
       descriptionarr.push(dataForecast.list[i].weather[0].description)
-      console.log(descriptionarr)
       i += 9
     }
-
     this.setState({
       forecast: forecastarr,
       date: datearr,
@@ -85,17 +73,13 @@ export default class Maps extends React.Component {
     if (this.state.markers[0] == undefined) {
       const map = this.refs.map.leafletElement
       setTimeout(function () { map.invalidateSize() }, 100);
-      //console.log(map)
     }
   }
-
-
 
   addMarker = (e) => {
     const { markers } = this.state
     markers.splice(0, 2, e.latlng)
     this.setState({ markers })
-    console.log(e.latlng)
   }
 
   onClick(event) {
@@ -103,6 +87,7 @@ export default class Maps extends React.Component {
     this.getWeather();
     this.getForecast();
   }
+
   render() {
     return (
       <div>
@@ -128,10 +113,15 @@ export default class Maps extends React.Component {
             </Marker>
           )}
         </Map>
-        {this.state.connectionError && <ListGroup>
-                    <ListGroup.Item>{this.state.connectionError}<br/>Try to change browser or attempt later</ListGroup.Item>
-                </ListGroup>}
-        {this.state.date && this.state.temperature && <MapsForm city={this.state.city} country={this.state.country} temperature={this.state.temperature} forecast={this.state.forecast} date={this.state.date} description={this.state.description} />}
+        
+        {this.state.connectionError=="TypeError: Failed to fetch" && <ListGroup>
+          <ListGroup.Item>{this.state.connectionError}<br />Try to change browser or attempt later</ListGroup.Item>
+        </ListGroup>}
+
+        {!this.state.city && this.state.connectionError=="TypeError: Cannot read property 'country' of undefined" && <ListGroup>
+          <ListGroup.Item>{this.state.connectionError}<br />Wrong latitude or longitude (you scrolled the whole map)</ListGroup.Item>
+        </ListGroup>}
+        {this.state.date && this.state.temperature && <MapsForm city={this.state.city} country={this.state.country} temperature={this.state.temperature} forecast={this.state.forecast} date={this.state.date} description={this.state.description} connectionError={this.state.connectionError} /> }
       </div>
     );
   }

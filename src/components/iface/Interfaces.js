@@ -10,13 +10,12 @@ function ControlledTabs() {
   return (
     <Tabs id="controlled-tab-example" activeKey={key} onSelect={k => setKey(k)}>
       <Tab eventKey="text" title="Text">
-        <Forms/>
+        <Forms />
       </Tab>
       <Tab eventKey="map" title="Map">
-        <Maps/>
+        <Maps />
       </Tab>
-      <Tab eventKey="description" title="Choose how you want to know the weather" disabled
-      >
+      <Tab eventKey="description" title="Choose how you want to know the weather" disabled>
       </Tab>
     </Tabs>
   );
@@ -26,9 +25,7 @@ export default class Interfaces extends Component {
   render() {
     return (
       <div>
-
         <ControlledTabs />
-        
       </div>
     )
   }
