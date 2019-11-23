@@ -28,42 +28,55 @@ export default class Forms extends Component {
             forecast: [],
             date: [],
             tableVisible: undefined,
-            emtpy: undefined
+            emtpy: undefined,
+            connectionError: undefined
         };
     }
 
-// shouldComponentUpdate(){
-//     if(this.state.city!=undefined){
-//         return true
-//         this.setState({
-//             empty: undefined
-//         })  
-//     }
-//     else{
-//         return false
-//         this.setState({
-//             empty: undefined
-//         }) 
-//     }
-// }
+    // shouldComponentUpdate(){
+    //     if(this.state.city!=undefined){
+    //         return true
+    //         this.setState({
+    //             empty: undefined
+    //         })  
+    //     }
+    //     else{
+    //         return false
+    //         this.setState({
+    //             empty: undefined
+    //         }) 
+    //     }
+    // }
 
     async getWeather() {
-
-        const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.state.city},${this.state.country}&APPID=${API_KEY}`)
-        const data = await api_call.json()
-        if (this.state.city && this.state.country) {
-            if (data.message != "city not found") {
-                this.setState({
-                    city: data.name,
-                    country: data.sys.country,
-                    temperature: Number((data.main.temp) - 273).toFixed(1),
-                    humidity: data.main.humidity,
-                    description: data.weather[0].description,
-                    error: "",
-                    cityid: data.id,
-                    empty: 1
-                })
-                this.getForecast()
+        try {
+            const api_call = await fetch(`//api.openweathermap.org/data/2.5/weather?q=${this.state.city},${this.state.country}&APPID=${API_KEY}`)
+            const data = await api_call.json()
+            if (this.state.city && this.state.country) {
+                if (data.message != "city not found") {
+                    this.setState({
+                        city: data.name,
+                        country: data.sys.country,
+                        temperature: Number((data.main.temp) - 273).toFixed(1),
+                        humidity: data.main.humidity,
+                        description: data.weather[0].description,
+                        error: "",
+                        cityid: data.id,
+                        empty: 1
+                    })
+                    this.getForecast()
+                }
+                else {
+                    this.setState({
+                        city: undefined,
+                        contry: undefined,
+                        temperature: undefined,
+                        humidity: undefined,
+                        description: undefined,
+                        error: "Please check the input is correct",
+                        tableVisible: undefined
+                    })
+                }
             }
             else {
                 this.setState({
@@ -77,15 +90,10 @@ export default class Forms extends Component {
                 })
             }
         }
-        else {
+        catch (e) {
+            console.log(e)
             this.setState({
-                city: undefined,
-                contry: undefined,
-                temperature: undefined,
-                humidity: undefined,
-                description: undefined,
-                error: "Please check the input is correct",
-                tableVisible: undefined
+              connectionError: e.name +":" + " " + e.message
             })
         }
     }
@@ -113,27 +121,27 @@ export default class Forms extends Component {
         })
     }
 
-    displayAllCountry(event){
+    displayAllCountry(event) {
         this.setState({
             country: event.target.value
         })
-        if(this.state.city && this.state.country){
+        if (this.state.city && this.state.country) {
             this.setState({
                 empty: undefined
             })
-            
+
         }
     }
 
-    displayAllCity(event){
+    displayAllCity(event) {
         this.setState({
             city: event.target.value
         })
-        if(this.state.city){
+        if (this.state.city) {
             this.setState({
                 empty: undefined
             })
-            
+
         }
     }
 
@@ -143,10 +151,10 @@ export default class Forms extends Component {
             <div>
                 <InputGroup className="mb-3">
                     <InputGroup.Prepend>
-                        <Button onClick={() => { this.getWeather() }}  variant="primary">Get Weather</Button>
+                        <Button onClick={() => { this.getWeather() }} variant="primary">Get Weather</Button>
                     </InputGroup.Prepend>
-                    <FormControl name="country" onChange={(event)=>this.displayAllCountry(event)}  placeholder="Country..." />
-                    <FormControl name="city" onChange={(event)=>this.displayAllCity(event)}  placeholder="City..." />
+                    <FormControl name="country" onChange={(event) => this.displayAllCountry(event)} placeholder="Country..." />
+                    <FormControl name="city" onChange={(event) => this.displayAllCity(event)} placeholder="City..." />
                 </InputGroup>
 
                 {this.state.city && this.state.country && <ListGroup>
@@ -167,6 +175,10 @@ export default class Forms extends Component {
 
                 {this.state.error && <ListGroup>
                     <ListGroup.Item>{this.state.error}</ListGroup.Item>
+                </ListGroup>}
+
+                {this.state.connectionError && <ListGroup>
+                    <ListGroup.Item>{this.state.connectionError}<br/>Try to change browser or attempt later</ListGroup.Item>
                 </ListGroup>}
 
 
@@ -196,8 +208,8 @@ export default class Forms extends Component {
                     </tbody>
                 </Table>}
 
-                {this.state.tableVisible && this.state.empty && <Graph forecast={this.state.forecast} date={this.state.date}/>}
-                
+                {this.state.tableVisible && this.state.empty && <Graph forecast={this.state.forecast} date={this.state.date} />}
+
             </div>
         )
     }
