@@ -5,8 +5,7 @@ import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Table from 'react-bootstrap/Table'
 import Graph from './Graph'
-import {API_KEY, monthNames} from '../../utils/constants'
-
+import { API_KEY, monthNames } from '../../utils/constants'
 
 export default class Forms extends Component {
     constructor(props) {
@@ -39,7 +38,7 @@ export default class Forms extends Component {
                         temperature: Number((data.main.temp) - 273).toFixed(1),
                         humidity: data.main.humidity,
                         description: data.weather[0].description,
-                        error: "",
+                        error: undefined,
                         cityid: data.id,
                         empty: 1
                     })
@@ -47,25 +46,13 @@ export default class Forms extends Component {
                 }
                 else {
                     this.setState({
-                        city: undefined,
-                        contry: undefined,
-                        temperature: undefined,
-                        humidity: undefined,
-                        description: undefined,
-                        error: "Please check the input is correct",
-                        tableVisible: undefined
+                        error: "Please check the input is correct"
                     })
                 }
             }
             else {
                 this.setState({
-                    city: undefined,
-                    contry: undefined,
-                    temperature: undefined,
-                    humidity: undefined,
-                    description: undefined,
-                    error: "Please check the input is correct",
-                    tableVisible: undefined
+                    error: "Please check the input is correct"
                 })
             }
         }
@@ -103,7 +90,6 @@ export default class Forms extends Component {
             this.setState({
                 empty: undefined
             })
-
         }
     }
 
@@ -115,7 +101,6 @@ export default class Forms extends Component {
             this.setState({
                 empty: undefined
             })
-
         }
     }
 

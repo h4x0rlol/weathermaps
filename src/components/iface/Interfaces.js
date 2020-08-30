@@ -21,12 +21,10 @@ function ControlledTabs() {
   );
 }
 
-export default class Interfaces extends Component {
-  render() {
+export default function Interfaces() {
     return (
       <div>
         <ControlledTabs />
       </div>
     )
-  }
 }
