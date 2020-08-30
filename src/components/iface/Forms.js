@@ -5,11 +5,8 @@ import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Table from 'react-bootstrap/Table'
 import Graph from './Graph'
+import {API_KEY, monthNames} from '../../utils/constants'
 
-const API_KEY = 'd674110527020c6fa3a7d540ff7bf7b0'
-
-const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"]
 
 export default class Forms extends Component {
     constructor(props) {
@@ -95,7 +92,6 @@ export default class Forms extends Component {
             forecast: forecastarr,
             date: datearr,
             tableVisible: 1
-
         })
     }
 

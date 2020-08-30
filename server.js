@@ -10,5 +10,5 @@ app.get('/', (req, res) => {
 let port = process.env.PORT || 1337;
 app.listen(port, () => {
 	console.log(__dirname);
-	console.log("Listening Port " + port);
+	console.log("Listening Port: " + port);
 });

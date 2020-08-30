@@ -3,18 +3,10 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Interfaces from './iface/Interfaces';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {}
-    }
-    render() {
-        return (
-            <div>
-              <Interfaces/>
-            </div>
-        )
-    }
+function App() {
+    return <div>
+        <Interfaces/>
+    </div>
 }
 
 const app = document.getElementById('app');
