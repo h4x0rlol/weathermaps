@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import MapsForm from './MapsForm'
 import ListGroup from 'react-bootstrap/ListGroup'
-
-const API_KEY = 'd674110527020c6fa3a7d540ff7bf7b0'
+import {API_KEY} from '../../utils/constants'
 
 const style = {
   map: {
