@@ -4,6 +4,7 @@ import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Table from 'react-bootstrap/Table'
+import Jumbotron from 'react-bootstrap/Jumbotron'
 import Graph from './Graph'
 import { API_KEY, monthNames } from '../../utils/constants'
 
@@ -22,7 +23,8 @@ export default class Forms extends Component {
             date: [],
             tableVisible: undefined,
             emtpy: undefined,
-            connectionError: undefined
+            connectionError: undefined,
+            previewText: true
         };
     }
 
@@ -40,25 +42,29 @@ export default class Forms extends Component {
                         description: data.weather[0].description,
                         error: undefined,
                         cityid: data.id,
-                        empty: 1
+                        empty: 1,
+                        previewText: false
                     })
                     this.getForecast()
                 }
                 else {
                     this.setState({
-                        error: "Please check the input is correct"
+                        error: "Please check the input is correct",
+                        previewText: false
                     })
                 }
             }
             else {
                 this.setState({
-                    error: "Please check the input is correct"
+                    error: "Please check the input is correct",
+                    previewText: false
                 })
             }
         }
         catch (e) {
             this.setState({
-                connectionError: e.name + ":" + " " + e.message
+                connectionError: e.name + ":" + " " + e.message,
+                previewText: false
             })
         }
     }
@@ -84,7 +90,8 @@ export default class Forms extends Component {
 
     displayAllCountry(event) {
         this.setState({
-            country: event.target.value
+            country: event.target.value,
+            previewText: false
         })
         if (this.state.city && this.state.country) {
             this.setState({
@@ -95,7 +102,8 @@ export default class Forms extends Component {
 
     displayAllCity(event) {
         this.setState({
-            city: event.target.value
+            city: event.target.value,
+            previewText: false
         })
         if (this.state.city) {
             this.setState({
@@ -163,6 +171,15 @@ export default class Forms extends Component {
                 </Table>}
 
                 {this.state.tableVisible && this.state.empty && <Graph forecast={this.state.forecast} date={this.state.date} />}
+                
+               { this.state.previewText && <Jumbotron>
+                            <h3>
+                                This is an example of a simple single page weather app, based on ReactJS using OpenWeatherMap API and leaflet maps, Chartjs for graphs, Booststrap for styles and bundled with webpack
+                         </h3>   
+                            <p>
+                            <a className="btn btn-primary" href="https://github.com/h4x0rlol/react-interactive-weather" role="button">Source code</a>
+                     </p>
+               </Jumbotron>}
 
             </div>
         )

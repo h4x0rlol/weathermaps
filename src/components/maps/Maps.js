@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import MapsForm from './MapsForm'
 import ListGroup from 'react-bootstrap/ListGroup'
+import Jumbotron from 'react-bootstrap/Jumbotron'
 import {API_KEY} from '../../utils/constants'
 
 const style = {
@@ -23,7 +24,8 @@ export default class Maps extends React.Component {
       description: [],
       forecast: [],
       date: [],
-      connectionError: undefined
+      connectionError: undefined,
+      textPreview: true
     };
   }
 
@@ -36,13 +38,15 @@ export default class Maps extends React.Component {
         country: data.sys.country,
         temperature: Number((data.main.temp) - 273).toFixed(1),
         description: data.weather[0].description,
-        connectionError: undefined
+        connectionError: undefined,
+        textPreview: false
       })
     }
     catch (e) {
       this.setState({
         city: undefined,
-        connectionError: e.name + ":" + " " + e.message
+        connectionError: e.name + ":" + " " + e.message,
+        textPreview: false
       })
     }
   }
@@ -64,7 +68,8 @@ export default class Maps extends React.Component {
     this.setState({
       forecast: forecastarr,
       date: datearr,
-      description: descriptionarr
+      description: descriptionarr,
+      textPreview: false
     })
   }
 
@@ -121,8 +126,14 @@ export default class Maps extends React.Component {
           <ListGroup.Item>{this.state.connectionError}<br />Wrong latitude or longitude (you scrolled the whole map)</ListGroup.Item>
         </ListGroup>}
         {this.state.date && this.state.temperature && <MapsForm city={this.state.city} country={this.state.country} temperature={this.state.temperature} forecast={this.state.forecast} date={this.state.date} description={this.state.description} connectionError={this.state.connectionError} /> }
+            
+                     {this.state.textPreview && <Jumbotron className="_map_text">
+                            <h3>
+                                Choose the place!
+                         </h3>   
+               </Jumbotron>}
+
       </div>
     );
   }
 }
-

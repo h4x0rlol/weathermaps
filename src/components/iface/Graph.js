@@ -3,16 +3,29 @@ import { Bar } from 'react-chartjs-2'
 import { monthNames } from '../../utils/constants'
 
 export default function Graph(props) {
+
+  const getLabels = () => {
+    let labels = []
+    for (let i = 0; i <= 4; i++) {
+      labels.push(monthNames[props.date[i].getMonth()] + ' ' + props.date[i].getDate().toString() + 'th')
+    }
+    return labels;
+  }
+
+  const getForecast = () => {
+      let forecast = []
+      for (let i = 0; i <= 4; i++) {
+        forecast.push(props.forecast[i])
+      }
+      return forecast
+  }
+
     return (
       <div>
         <h2>Temperature graph</h2>
         <Bar
           data={{
-            labels: [monthNames[props.date[0].getMonth()] + ' ' + props.date[0].getDate().toString() + 'th',
-            monthNames[props.date[1].getMonth()] + ' ' + props.date[1].getDate().toString() + 'th',
-            monthNames[props.date[2].getMonth()] + ' ' + props.date[2].getDate().toString() + 'th',
-            monthNames[props.date[3].getMonth()] + ' ' + props.date[3].getDate().toString() + 'th',
-            monthNames[props.date[4].getMonth()] + ' ' + props.date[4].getDate().toString() + 'th'],
+            labels: getLabels(),
             datasets: [
               {
                 label: 'Temp',
@@ -21,7 +34,7 @@ export default function Graph(props) {
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                 hoverBorderColor: 'rgba(255,99,132,1)',
-                data: [props.forecast[0], props.forecast[1], props.forecast[2], props.forecast[3], props.forecast[4]]
+                data: getForecast()
               }
             ]
           }}
