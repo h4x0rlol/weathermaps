@@ -12,8 +12,8 @@ module.exports = {
       safe: true 
     })
   ],
-  mode: 'development',
-  // mode: 'production',
+  // mode: 'development',
+  mode: 'production',
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'bundle.js',
