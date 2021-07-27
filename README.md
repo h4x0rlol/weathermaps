@@ -2,7 +2,7 @@
 React Weather Application using OpenWeatherMap API and leaflet maps,
 Chartjs for graphs and Booststrap for styles
 
-[Try it](https://h4x0rlol.github.io/react-interactive-weather/)
+[Try it](https://h4x0rlol.github.io/weathermaps/)
 
 ![Preview](https://sun9-25.userapi.com/qm8ChFukQy4ZkpBMTmTAR3KapoqWNqsj_-XhBQ/8GqR3UNZyTY.jpg "Preview")
 
